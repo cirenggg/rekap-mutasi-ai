@@ -7,7 +7,11 @@ import json
 import numpy as np
 
 # --- PENGATURAN DEFAULT ADMIN ---
-DEFAULT_API_KEY = "AQ.Ab8RN6IjnYsyy4U-W4l7ApxakVUnhgQZu3_lMUHzq0PNiUXk3w" # <--- Paste API Key Premium Anda
+try:
+    DEFAULT_API_KEY = st.secrets["API_KEY"]
+except:
+    DEFAULT_API_KEY = ""
+    
 DEFAULT_MODEL = "models/gemini-3.1-flash-lite"
 ADMIN_PASSWORD = "semarangpemuda" 
 
@@ -89,8 +93,8 @@ st.write("Mengubah e-statement PDF ke Excel dan otomatis menghitung mutasi bulan
 file_pdf = st.file_uploader("Unggah file PDF Rekening Koran di sini", type=["pdf"])
 
 if file_pdf is not None:
-    if api_key == "ISI_API_KEY_ANDA_DI_SINI" or not api_key:
-        st.warning("⚠️ API Key Default belum dimasukkan ke dalam kode aplikasi.")
+    if not api_key:
+        st.warning("⚠️ API Key Default belum dimasukkan atau gagal dimuat dari Secrets.")
     else:
         # Jika user mengunggah file baru, bersihkan memori lama
         if st.session_state['nama_file_terakhir'] != file_pdf.name:
